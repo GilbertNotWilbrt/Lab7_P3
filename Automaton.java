@@ -52,24 +52,50 @@ public class Automaton
         // based on the state of its two neighbors.
         for(int i = 0; i < state.length; i++) {
             int left, center, right;
-            if(i == 0) {
-                left = 0;
-            }
-            else {
-                left = state[i - 1];
-            }
+            // Replaced if-else with conditional operator for left neighbor.
+            // If i == 0 (first cell), left is 0, otherwise it's state[i - 1].
+            left = (i == 0) ? 0 : state[i - 1];
+
             center = state[i];
-            if(i + 1 < state.length) {
-                right = state[i + 1];
-            }
-            else {
-                right = 0;
-            }
+            
+            // Replaced if-else with conditional operator for right neighbor.
+            // If i + 1 is out of bounds (last cell), right is 0, otherwise it's state[i + 1].
+            right = (i + 1 < state.length) ? state[i + 1] : 0;
+            
             nextState[i] = (left + center + right) % 2;
+            
+            /*
+             * // EXERCISE 32: Avoids the 'nextState' array by using one temporary variable.
+        int tempLeft = 0; // Holds the old value of the cell just processed (state[i-1]).
+        
+        for(int i = 0; i < state.length; i++) {
+            //  Get the current old values for calculation
+            int left = tempLeft;
+            int center = state[i];
+            int right = (i + 1 < state.length) ? state[i + 1] : 0;
+            
+            // 2. Save the value that will become the 'left' neighbor for the next cell (i+1).
+            // This must be the old value of the current center cell (state[i]).
+            int nextLeft = center;
+            
+            // 3. Calculate and write the new value back to the array immediately.
+            state[i] = (left + center + right) % 2;
+            
+            // 4. Update tempLeft for the next iteration (i+1).
+            tempLeft = nextLeft;
+        }
+    }
+             */
         }
         state = nextState;
     }
     
+    private int calculateNextState(int left, int center, int right)
+    {
+    // currently, next state is 1 if an odd number of neighbors are 1 (on)    
+    return (left + center + right) % 2;
+    }
+       
     /**
      * Reset the automaton.
      */
