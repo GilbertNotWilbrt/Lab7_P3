@@ -8,3 +8,10 @@ This project is part of the material of the book
    David J. Barnes and Michael Kölling
 
 It is discussed in chapter 7.
+
+27. Yes, the same patterns emerge. 
+
+28. It is used to clear the automaton's current state. It sets 
+every element in the state array to 0
+
+29. 

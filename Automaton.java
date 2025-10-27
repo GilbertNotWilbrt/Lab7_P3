@@ -77,6 +77,11 @@ public class Automaton
     {
         Arrays.fill(state, 0);
         // Seed the automaton with a single 'on' cell.
+        //Center Seed
         state[numberOfCells / 2] = 1;
+        // Left seed (10 cells from the left edge)
+        state[10] = 1;
+        // Right seed (10 cells from the right edge)
+        state[numberOfCells - 11] = 1; // if numberOfCells is say 30, it is at index 19.
     }
 }
