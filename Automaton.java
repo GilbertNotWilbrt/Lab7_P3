@@ -20,7 +20,7 @@ public class Automaton
     public Automaton(int numberOfCells)
     {
         this.numberOfCells = numberOfCells;
-        state = new int[numberOfCells];
+        state = new int[numberOfCells + 1];
         // Seed the automaton with a single 'on' cell in the middle.
         state[numberOfCells / 2] = 1;
     }
@@ -46,46 +46,14 @@ public class Automaton
      */
     public void update()
     {
-        // Build the new state in a separate array.
         int[] nextState = new int[state.length];
-        // Naively update the state of each cell
-        // based on the state of its two neighbors.
-        for(int i = 0; i < state.length; i++) {
-            int left, center, right;
-            // Replaced if-else with conditional operator for left neighbor.
-            // If i == 0 (first cell), left is 0, otherwise it's state[i - 1].
-            left = (i == 0) ? 0 : state[i - 1];
-
-            center = state[i];
-            
-            // Replaced if-else with conditional operator for right neighbor.
-            // If i + 1 is out of bounds (last cell), right is 0, otherwise it's state[i + 1].
-            right = (i + 1 < state.length) ? state[i + 1] : 0;
-            
-            nextState[i] = (left + center + right) % 2;
-            
-            /*
-             * // EXERCISE 32: Avoids the 'nextState' array by using one temporary variable.
-        int tempLeft = 0; // Holds the old value of the cell just processed (state[i-1]).
-        
-        for(int i = 0; i < state.length; i++) {
-            //  Get the current old values for calculation
-            int left = tempLeft;
-            int center = state[i];
-            int right = (i + 1 < state.length) ? state[i + 1] : 0;
-            
-            // 2. Save the value that will become the 'left' neighbor for the next cell (i+1).
-            // This must be the old value of the current center cell (state[i]).
-            int nextLeft = center;
-            
-            // 3. Calculate and write the new value back to the array immediately.
-            state[i] = (left + center + right) % 2;
-            
-            // 4. Update tempLeft for the next iteration (i+1).
-            tempLeft = nextLeft;
-        }
-    }
-             */
+        int left = 0;
+        int center = state[0];
+        for(int i = 0; i < numberOfCells; i++) {
+           int right = state[i+1];
+           nextState[i] = calculateNextState(left, center, right);
+           left = center;
+           center = right;
         }
         state = nextState;
     }
